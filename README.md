@@ -35,6 +35,112 @@ In a commercial establishment like a modern café or retail branch, business ope
 * **Deterministic IP Planning:** Reserve static pools (`.1`–`.20`) for critical default gateways and network printers, while dynamically leasing addresses (`.21`+) to PCs and wireless endpoints.
 * **Management Hardening:** Enforce SSHv2 remote administrative access, MD5/Scrypt privileged secrets, MOTD banners, and console line security.
 
+---
+<detail> 
+<summary>Network Architecture & Topology</summary>
+### Topology Diagram (Packet Tracer)
+![Network Topology Diagram](images/topology_diagram.jpeg)
+</detail>
+---
+<detail>
+<summary> Addressing and VLAN segmentation</summary>
+## 📊 Addressing Scheme & VLAN Segmentation
+
+| VLAN ID | VLAN Name | Subnet | Gateway | Static Pool (Reserved) | DHCP Pool Range | Assigned Ports |
+|:---|:---|:---|:---|:---|:---|:---|
+| **10** | `managment_office` | `192.168.10.0/24` | `192.168.10.1` | `192.168.10.1` - `.20` | `192.168.10.21` - `.254` | `Fa0/1` - `Fa0/5` |
+| **20** | `POS` | `192.168.20.0/24` | `192.168.20.1` | `192.168.20.1` - `.20` | `192.168.20.21` - `.254` | `Fa0/6` - `Fa0/10` |
+| **30** | `GUEST_WIFI` | `192.168.30.0/24` | `192.168.30.1` | `192.168.30.1` - `.20` | `192.168.30.21` - `.254` | `Fa0/11` |
+| **99** | `Network_Management`| `192.168.99.0/24` | `192.168.99.1` | `192.168.99.1` - `.20` | N/A (Static SVI: `.2`) | Internal / Trunk |
+</detail>
+---
+
+<detail>
+   <summary> Switch Configuration </summary>
+## ⚙ Step-by-Step Configuration Commands
+
+### 1. Switch Configuration (`Coffee-SW`)
+
+```cisco
+! --- Hostname, Passwords & CLI Usability ---
+Switch> enable
+Switch# configure terminal
+Switch(config)# hostname Coffee-SW
+Coffee-SW(config)# no ip domain-lookup
+Coffee-SW(config)# service password-encryption
+Coffee-SW(config)# enable secret Cisco123!
+Coffee-SW(config)# banner motd ^C Unauthorized Access Prohibited ^C
+
+! --- SSHv2 Remote Management Setup ---
+Coffee-SW(config)# ip domain-name singh.com
+Coffee-SW(config)# crypto key generate rsa general-keys modulus 1024
+Coffee-SW(config)# ip ssh version 2
+Coffee-SW(config)# username admin privilege 15 secret AdminPass123!
+
+! --- Line Hardening ---
+Coffee-SW(config)# line con 0
+Coffee-SW(config-line)# password ConsolePass123!
+Coffee-SW(config-line)# logging synchronous
+Coffee-SW(config-line)# exit
+Coffee-SW(config)# line vty 0 15
+Coffee-SW(config-line)# login local
+Coffee-SW(config-line)# transport input ssh
+Coffee-SW(config-line)# exit
+
+! --- VLAN Creation & Port Allocation ---
+Coffee-SW(config)# vlan 10
+Coffee-SW(config-vlan)# name managment_office
+Coffee-SW(config)# vlan 20
+Coffee-SW(config-vlan)# name POS
+Coffee-SW(config)# vlan 30
+Coffee-SW(config-vlan)# name GUEST_WIFI
+Coffee-SW(config)# vlan 99
+Coffee-SW(config-vlan)# name Network_Managment
+Coffee-SW(config-vlan)# exit
+
+! --- Assign Access Ports with STP PortFast ---
+Coffee-SW(config)# interface range fa0/1 - 5
+Coffee-SW(config-if-range)# description #Managment_office#
+Coffee-SW(config-if-range)# switchport mode access
+Coffee-SW(config-if-range)# switchport access vlan 10
+Coffee-SW(config-if-range)# spanning-tree portfast
+Coffee-SW(config-if-range)# exit
+
+Coffee-SW(config)# interface range fa0/6 - 10
+Coffee-SW(config-if-range)# description #POS#
+Coffee-SW(config-if-range)# switchport mode access
+Coffee-SW(config-if-range)# switchport access vlan 20
+Coffee-SW(config-if-range)# spanning-tree portfast
+Coffee-SW(config-if-range)# exit
+
+Coffee-SW(config)# interface fa0/11
+Coffee-SW(config-if)# description # Guest_WIFI#
+Coffee-SW(config-if)# switchport mode access
+Coffee-SW(config-if)# switchport access vlan 30
+Coffee-SW(config-if)# spanning-tree portfast
+Coffee-SW(config-if)# exit
+
+! --- 802.1Q Trunk Link to Router ---
+Coffee-SW(config)# interface gig0/1
+Coffee-SW(config-if)# description #TO_Coffee_Shop_RTR#
+Coffee-SW(config-if)# switchport trunk encapsulation dot1q
+Coffee-SW(config-if)# switchport mode trunk
+Coffee-SW(config-if)# switchport trunk allowed vlan 10,20,30,99
+Coffee-SW(config-if)# exit
+
+! --- Switch Virtual Interface (SVI) Management IP ---
+Coffee-SW(config)# interface vlan 99
+Coffee-SW(config-if)# description ##TO_Switch_Managment##
+Coffee-SW(config-if)# ip address 192.168.99.2 255.255.255.0
+Coffee-SW(config-if)# no shutdown
+Coffee-SW(config-if)# exit
+Coffee-SW(config)# ip default-gateway 192.168.99.1
+Coffee-SW(config)# interface vlan 1
+Coffee-SW(config-if)# shutdown
+Coffee-SW(config-if)# exit
+Coffee-SW(config)# do copy run start
+```
+</detail> 
 
 
 
