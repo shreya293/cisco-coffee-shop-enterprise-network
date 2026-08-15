@@ -205,3 +205,116 @@ Coffee-SW(config)# do copy run start
 ```
 
 </details>
+---
+
+<a name="section-5-router-on-a-stick-dhcp--acl-security-configuration"></a>
+## 🌐 Section 5: Router-on-a-Stick, DHCP & ACL Security Configuration
+
+This section provides the full configuration script for `Coffee-Shop RTR` (Cisco 2911) including 802.1Q sub-interfaces, dynamic DHCP scopes, and inbound Extended ACLs.
+
+<details>
+<summary>▶ <b>Click to view Router CLI Configuration Script</b></summary>
+<br>
+
+```cisco
+! ==========================================
+! ROUTER CONFIGURATION: Coffee-Shop RTR (Cisco 2911)
+! ==========================================
+
+! --- Hostname & System Security ---
+Router> enable
+Router# configure terminal
+Router(config)# hostname RTR
+RTR(config)# no ip domain-lookup
+RTR(config)# service password-encryption
+RTR(config)# enable secret Cisco123!
+RTR(config)# banner motd ^C Unautorized access banned ^C
+
+! --- Line Hardening ---
+RTR(config)# line con 0
+RTR(config-line)# password ConsolePass123!
+RTR(config-line)# logging synchronous
+RTR(config-line)# exit
+RTR(config)# line vty 0 4
+RTR(config-line)# login
+RTR(config-line)# exit
+
+! --- WAN Interface to ISP (Pre-staged) ---
+RTR(config)# interface gig0/0
+RTR(config-if)# description ## to_ISP##
+RTR(config-if)# no shutdown
+RTR(config-if)# exit
+
+! --- Router-on-a-Stick Sub-interfaces ---
+RTR(config)# interface gig0/1
+RTR(config-if)# description ## to_SW1 ##
+RTR(config-if)# no ip address
+RTR(config-if)# no shutdown
+RTR(config-if)# exit
+
+RTR(config)# interface gig0/1.10
+RTR(config-subif)# description ##Management_Office##
+RTR(config-subif)# encapsulation dot1Q 10
+RTR(config-subif)# ip address 192.168.10.1 255.255.255.0
+RTR(config-subif)# exit
+
+RTR(config)# interface gig0/1.20
+RTR(config-subif)# description ## POS_Gateway##
+RTR(config-subif)# encapsulation dot1Q 20
+RTR(config-subif)# ip address 192.168.20.1 255.255.255.0
+RTR(config-subif)# exit
+
+RTR(config)# interface gig0/1.30
+RTR(config-subif)# description ##GUEST_WIFI##
+RTR(config-subif)# encapsulation dot1Q 30
+RTR(config-subif)# ip address 192.168.30.1 255.255.255.0
+RTR(config-subif)# exit
+
+RTR(config)# interface gig0/1.99
+RTR(config-subif)# description ##Network_Managment_gateway##
+RTR(config-subif)# encapsulation dot1Q 99
+RTR(config-subif)# ip address 192.168.99.1 255.255.255.0
+RTR(config-subif)# exit
+
+! --- DHCP Server Pools Configuration ---
+RTR(config)# ip dhcp excluded-address 192.168.10.1 192.168.10.20
+RTR(config)# ip dhcp excluded-address 192.168.20.1 192.168.20.20
+RTR(config)# ip dhcp excluded-address 192.168.30.1 192.168.30.20
+
+RTR(config)# ip dhcp pool managment_office
+RTR(dhcp-config)# network 192.168.10.0 255.255.255.0
+RTR(dhcp-config)# default-router 192.168.10.1
+RTR(dhcp-config)# dns-server 8.8.8.8
+RTR(dhcp-config)# exit
+
+RTR(config)# ip dhcp pool POS
+RTR(dhcp-config)# network 192.168.20.0 255.255.255.0
+RTR(dhcp-config)# default-router 192.168.20.1
+RTR(dhcp-config)# dns-server 8.8.8.8
+RTR(dhcp-config)# exit
+
+RTR(config)# ip dhcp pool GUEST_WIFI
+RTR(dhcp-config)# network 192.168.30.0 255.255.255.0
+RTR(dhcp-config)# default-router 192.168.30.1
+RTR(dhcp-config)# dns-server 8.8.8.8
+RTR(dhcp-config)# exit
+
+! --- Extended Access Control List (Guest Network Isolation) ---
+RTR(config)# ip access-list extended GUEST
+RTR(config-ext-nacl)# permit udp any eq bootpc any eq bootps
+RTR(config-ext-nacl)# deny ip 192.168.30.0 0.0.0.255 192.168.10.0 0.0.0.255
+RTR(config-ext-nacl)# deny ip 192.168.30.0 0.0.0.255 192.168.20.0 0.0.0.255
+RTR(config-ext-nacl)# deny ip 192.168.30.0 0.0.0.255 192.168.99.0 0.0.0.255
+RTR(config-ext-nacl)# permit ip 192.168.30.0 0.0.0.255 any
+RTR(config-ext-nacl)# exit
+
+! --- Apply ACL Inbound on Guest Sub-interface ---
+RTR(config)# interface gig0/1.30
+RTR(config-subif)# ip access-group GUEST in
+RTR(config-subif)# exit
+RTR(config)# do copy run start
+```
+
+</details>
+
+---
