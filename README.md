@@ -39,9 +39,11 @@ In a commercial establishment like a modern café or retail branch, business ope
 
 <detail> 
 <summary>Network Architecture & Topology</summary>
+   
 ### Topology Diagram (Packet Tracer)
 ![Network Topology Diagram](images/topology_diagram.jpeg)
 </detail>
+
 ---
 <detail>
 <summary> Addressing and VLAN segmentation</summary>
@@ -62,6 +64,7 @@ In a commercial establishment like a modern café or retail branch, business ope
 
 <detail>
    <summary> Switch Configuration </summary>
+   
 ## ⚙ Step-by-Step Configuration Commands
 
 ### 1. Switch Configuration (`Coffee-SW`)
