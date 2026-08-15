@@ -385,26 +385,25 @@ This section provides visual audit proof of all running-configurations across th
 |:---:|:---:|
 | ![RTR Show Run 1](images/rtr_sh_run_1.jpeg) | ![RTR Show Run 2](images/rtr_sh_run_2.jpeg) |
 
-| Router Sub-Interfaces (`Gi0/1.10`, `.20`, `.30`, `.99`) | Router Extended ACL (`GUEST`) & Line Configs |
-|:---:|:---:|
-| ![RTR Show Run 3](images/rtr_sh_run_3.jpeg) | ![RTR Show Run 4](images/rtr_sh_run_4.jpeg) |
+| WAN & Management Office Sub-Interface (`Gi0/1.10`) | POS, Guest & Management Sub-Interfaces (`.20`, `.30`, `.99`) | Router Extended ACL (`GUEST`) & Line Configs |
+|:---:|:---:|:---:|
+| ![RTR Show Run 3](images/rtr_sh_run_3.jpeg) | ![RTR Sub-Interfaces](images/rtr_sh_run_subinterfaces.jpeg) | ![RTR Show Run 4](images/rtr_sh_run_4.jpeg) |
 
 ---
 
 ### Switch Running-Config Proofs (`Coffee-SW# sh run`)
 
-| Switch Hostname, Secrets & SSH Config | Switch Access Ports (`Fa0/1` – `Fa0/5` in VLAN 10) |
-|:---:|:---:|
-| ![SW Show Run 1](images/sw_sh_run_1.jpeg) | ![SW Show Run 2](images/sw_sh_run_2.jpeg) |
-
-| Switch Access Ports (`Fa0/6` – `Fa0/11` in VLAN 20 & 30) | Switch Trunk Uplink (`Gi0/1`) & Management SVI (`Vlan99`) | Switch Line VTY & Console Security |
+| Switch Hostname, Secrets & SSH Config | Switch Access Ports (`Fa0/1` – `Fa0/3` in VLAN 10) | Switch Access Ports (`Fa0/4` – `Fa0/8` in VLAN 10 & 20) |
 |:---:|:---:|:---:|
-| ![SW Show Run 3](images/sw_sh_run_3.jpeg) | ![SW Show Run 4](images/sw_sh_run_4.jpeg) | ![SW Show Run 5](images/sw_sh_run_5.jpeg) |
+| ![SW Show Run 1](images/sw_sh_run_1.jpeg) | ![SW Show Run 2](images/sw_sh_run_2.jpeg) | ![SW Show Run 3](images/sw_sh_run_3.jpeg) |
+
+| Switch Access Ports (`Fa0/9` – `Fa0/11` in VLAN 20 & 30) | Switch Trunk Uplink (`Gi0/1`) & SVI (`Vlan99`) | Switch Line VTY & Console Security |
+|:---:|:---:|:---:|
+| ![SW Access Ports 2](images/sw_sh_run_access_ports.jpeg) | ![SW Show Run 4](images/sw_sh_run_4.jpeg) | ![SW Show Run 5](images/sw_sh_run_5.jpeg) |
 
 </details>
 
 ---
-
 <a name="section-8-connectivity-validation--security-isolation-tests"></a>
 ## 🧪 Section 8: Connectivity Validation & Security Isolation Tests
 
@@ -453,4 +452,3 @@ This section synthesizes the core technical insights gained throughout this impl
 3. **Defense-in-Depth for Management:** Disabling telnet across VTY lines via `transport input ssh` and routing management through an isolated SVI (`VLAN 99`) protects infrastructure from rogue LAN discovery.
 
 </details>
----
