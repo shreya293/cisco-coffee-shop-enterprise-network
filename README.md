@@ -35,6 +35,28 @@ In a commercial establishment like a modern café or retail branch, business ope
 * **Deterministic IP Planning:** Reserve static pools (`.1`–`.20`) for critical default gateways and network printers, while dynamically leasing addresses (`.21`+) to PCs and wireless endpoints.
 * **Management Hardening:** Enforce SSHv2 remote administrative access, MD5/Scrypt privileged secrets, MOTD banners, and console line security.
 
+
+
+
+
+
+
+<details>
+<summary>📌 <b>Table of Contents (Click to Expand / Collapse)</b></summary>
+
+1. [Executive Summary & Design Objectives](#-executive-summary--design-objectives)
+2. [Network Architecture & Topology](#-network-architecture--topology)
+3. [Addressing Scheme & VLAN Segmentation](#-addressing-scheme--vlan-segmentation)
+4. [Step-by-Step Configuration Commands](#-step-by-step-configuration-commands)
+   - [Switch Hardening & L2 VLAN Configuration](#1-switch-configuration-coffee-sw)
+   - [Router-on-a-Stick, DHCP & ACL Security](#2-router-configuration-coffee-shop-rtr)
+5. [End-Device & Wireless Setup](#-end-device--wireless-setup)
+6. [Configuration Verification (Running-Configs)](#-configuration-verification-running-configs)
+7. [Testing & Connectivity Validation](#-testing--connectivity-validation)
+8. [Key Engineering Takeaways](#-key-engineering-takeaways)
+
+</details>
+
 ---
 
 ## 🗺 Network Architecture & Topology
