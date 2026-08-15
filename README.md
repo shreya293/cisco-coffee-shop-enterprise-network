@@ -1,4 +1,4 @@
-readme_structured = """# Secure Small-Business Enterprise Network (Coffee Shop Branch)
+# Secure Small-Business Enterprise Network (Coffee Shop Branch)
 
 A production-ready small-business enterprise local area network (LAN) designed and validated in **Cisco Packet Tracer**. This project simulates an end-to-end network implementation for a multi-zone commercial environment ("Mike's Coffee Shop"), demonstrating network segmentation, Inter-VLAN routing (Router-on-a-Stick), dynamic addressing via Cisco IOS DHCP pools, hardened device administration, and security boundaries using extended Access Control Lists (ACLs).
 
