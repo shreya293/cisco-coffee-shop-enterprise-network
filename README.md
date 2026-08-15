@@ -47,8 +47,6 @@ In a commercial establishment like a modern café or retail branch, business ope
 ---
 <detail>
 <summary> Addressing and VLAN segmentation</summary>
-   
----
 
 ## 📊 Addressing Scheme & VLAN Segmentation
 
