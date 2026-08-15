@@ -36,6 +36,7 @@ In a commercial establishment like a modern café or retail branch, business ope
 * **Management Hardening:** Enforce SSHv2 remote administrative access, MD5/Scrypt privileged secrets, MOTD banners, and console line security.
 
 ---
+
 <detail> 
 <summary>Network Architecture & Topology</summary>
 ### Topology Diagram (Packet Tracer)
@@ -44,6 +45,9 @@ In a commercial establishment like a modern café or retail branch, business ope
 ---
 <detail>
 <summary> Addressing and VLAN segmentation</summary>
+   
+---
+
 ## 📊 Addressing Scheme & VLAN Segmentation
 
 | VLAN ID | VLAN Name | Subnet | Gateway | Static Pool (Reserved) | DHCP Pool Range | Assigned Ports |
@@ -53,6 +57,7 @@ In a commercial establishment like a modern café or retail branch, business ope
 | **30** | `GUEST_WIFI` | `192.168.30.0/24` | `192.168.30.1` | `192.168.30.1` - `.20` | `192.168.30.21` - `.254` | `Fa0/11` |
 | **99** | `Network_Management`| `192.168.99.0/24` | `192.168.99.1` | `192.168.99.1` - `.20` | N/A (Static SVI: `.2`) | Internal / Trunk |
 </detail>
+
 ---
 
 <detail>
