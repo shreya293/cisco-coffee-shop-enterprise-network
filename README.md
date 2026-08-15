@@ -57,24 +57,24 @@ This section renders the physical and logical layout of the Coffee Shop deployme
 
 ```mermaid
 flowchart TD
-    ISP["☁️ Cloud ISP"] ---|Gig0/0 WAN| RTR["🔲 Cisco 2911 Router<br><b>Coffee-Shop RTR</b><br>192.168.x.1 Gateways"]
+    ISP["☁️ Cloud ISP"] -->|Gig0/0 WAN| RTR["🔲 Cisco 2911 Router<br><b>Coffee-Shop RTR</b><br>192.168.x.1 Gateways"]
     
-    RTR ---|Gig0/1 (802.1Q Trunk)<br>VLANs 10, 20, 30, 99| SW["🔲 Cisco 2960 Switch<br><b>Coffee-SW</b><br>192.168.99.2 (SVI)"]
+    RTR -->|802.1Q Trunk Link<br>VLANs 10, 20, 30, 99| SW["🔲 Cisco 2960 Switch<br><b>Coffee-SW</b><br>192.168.99.2 SVI"]
     
-    subgraph VLAN10 ["🏢 VLAN 10: Management Office (192.168.10.0/24)"]
-        SW ---|Fa0/1| PC_MGR["💻 Manager PC<br>192.168.10.21 (DHCP)"]
-        SW ---|Fa0/2| PRN_OFF["🖨️ Office Printer<br>192.168.10.10 (Static)"]
+    subgraph VLAN10 ["🏢 VLAN 10: Management Office - 192.168.10.0/24"]
+        SW -->|Port Fa0/1| PC_MGR["💻 Manager PC<br>192.168.10.21 - DHCP"]
+        SW -->|Port Fa0/2| PRN_OFF["🖨️ Office Printer<br>192.168.10.10 - Static"]
     end
 
-    subgraph VLAN20 ["💳 VLAN 20: Point of Sale (192.168.20.0/24)"]
-        SW ---|Fa0/6| POS_TERM["💻 POS Terminal<br>192.168.20.21 (DHCP)"]
-        SW ---|Fa0/7| PRN_RCPT["🖨️ Receipt Printer<br>192.168.20.10 (Static)"]
+    subgraph VLAN20 ["💳 VLAN 20: Point of Sale - 192.168.20.0/24"]
+        SW -->|Port Fa0/6| POS_TERM["💻 POS Terminal<br>192.168.20.21 - DHCP"]
+        SW -->|Port Fa0/7| PRN_RCPT["🖨️ Receipt Printer<br>192.168.20.10 - Static"]
     end
 
-    subgraph VLAN30 ["☕ VLAN 30: Guest Wi-Fi (192.168.30.0/24)"]
-        SW ---|Fa0/11| AP["📡 AccessPoint-PT<br>SSID: Coffee-SHop-Guest"]
-        AP -.-|802.11n Wireless| LP0["💻 Guest Laptop 0<br>192.168.30.21 (DHCP)"]
-        AP -.-|802.11n Wireless| LP1["💻 Guest Laptop 1<br>192.168.30.22 (DHCP)"]
+    subgraph VLAN30 ["☕ VLAN 30: Guest Wi-Fi - 192.168.30.0/24"]
+        SW -->|Port Fa0/11| AP["📡 AccessPoint-PT<br>SSID: Coffee-SHop-Guest"]
+        AP -.->|802.11n Wireless| LP0["💻 Guest Laptop 0<br>192.168.30.21 - DHCP"]
+        AP -.->|802.11n Wireless| LP1["💻 Guest Laptop 1<br>192.168.30.22 - DHCP"]
     end
 
     classDef rtr fill:#003366,stroke:#fff,stroke-width:2px,color:#fff;
