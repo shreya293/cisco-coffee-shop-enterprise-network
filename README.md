@@ -318,3 +318,54 @@ RTR(config)# do copy run start
 </details>
 
 ---
+<a name="section-6-end-device--wireless-infrastructure-setup"></a>
+## 🖨 Section 6: End-Device & Wireless Infrastructure Setup
+
+This section documents static printer provisioning, access point wireless parameters, and client WPA2 associations.
+
+<details>
+<summary>▶ <b>Click to view End-Device & Wireless Setup Screenshots</b></summary>
+<br>
+
+### 1. Static IP Device Assignments
+
+#### Office Printer (VLAN 10)
+* **IP Address:** `192.168.10.10`
+* **Subnet Mask:** `255.255.255.0`
+* **Default Gateway:** `192.168.10.1`
+* **DNS Server:** `8.8.8.8`
+
+| Office Printer Global Settings | Office Printer FastEthernet0 Config |
+|:---:|:---:|
+| ![Office Printer Global](images/printer_office_global.jpeg) | ![Office Printer IP](images/printer_office_ip.jpeg) |
+
+#### Receipt Printer (VLAN 20)
+* **IP Address:** `192.168.20.10`
+* **Subnet Mask:** `255.255.255.0`
+* **Default Gateway:** `192.168.20.1`
+* **DNS Server:** `8.8.8.8`
+
+| Receipt Printer Global Settings | Receipt Printer FastEthernet0 Config |
+|:---:|:---:|
+| ![Receipt Printer Global](images/printer_receipt_global.jpeg) | ![Receipt Printer IP](images/printer_receipt_ip.jpeg) |
+
+---
+
+### 2. Wireless Access Point & Client Associations
+
+* **SSID:** `Coffee-SHop-Guest`
+* **Channel:** Channel 6 (2.4 GHz)
+* **Security Protocol:** WPA2-PSK (AES Encryption)
+* **Pre-shared Key (PSK):** `CofShop!!!`
+
+| Access Point Port 1 Setup | Client WPA2-Personal Authentication |
+|:---:|:---:|
+| ![AP Port Config](images/ap_port_config.jpeg) | ![Client Association](images/laptop_wpa2_connect.jpeg) |
+
+| Guest Client Association Status | Guest Laptop 0 DHCP Lease (`192.168.30.21`) |
+|:---:|:---:|
+| ![Wireless Monitor](images/laptop_wireless_monitor.jpeg) | ![Laptop0 DHCP Lease](images/laptop0_dhcp.jpeg) |
+
+</details>
+
+---
