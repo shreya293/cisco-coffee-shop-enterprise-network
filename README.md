@@ -369,3 +369,88 @@ This section documents static printer provisioning, access point wireless parame
 </details>
 
 ---
+
+<a name="section-7-running-configuration-proofs-show-run"></a>
+## 📜 Section 7: Running-Configuration Proofs (`show run`)
+
+This section provides visual audit proof of all running-configurations across the router and switch.
+
+<details>
+<summary>▶ <b>Click to view Router & Switch running-config proofs</b></summary>
+<br>
+
+### Router Running-Config Proofs (`RTR# do sh run`)
+
+| Router Services & DHCP Exclusions | Router DHCP Pools & Hardware UDI |
+|:---:|:---:|
+| ![RTR Show Run 1](images/rtr_sh_run_1.jpeg) | ![RTR Show Run 2](images/rtr_sh_run_2.jpeg) |
+
+| Router Sub-Interfaces (`Gi0/1.10`, `.20`, `.30`, `.99`) | Router Extended ACL (`GUEST`) & Line Configs |
+|:---:|:---:|
+| ![RTR Show Run 3](images/rtr_sh_run_3.jpeg) | ![RTR Show Run 4](images/rtr_sh_run_4.jpeg) |
+
+---
+
+### Switch Running-Config Proofs (`Coffee-SW# sh run`)
+
+| Switch Hostname, Secrets & SSH Config | Switch Access Ports (`Fa0/1` – `Fa0/5` in VLAN 10) |
+|:---:|:---:|
+| ![SW Show Run 1](images/sw_sh_run_1.jpeg) | ![SW Show Run 2](images/sw_sh_run_2.jpeg) |
+
+| Switch Access Ports (`Fa0/6` – `Fa0/11` in VLAN 20 & 30) | Switch Trunk Uplink (`Gi0/1`) & Management SVI (`Vlan99`) | Switch Line VTY & Console Security |
+|:---:|:---:|:---:|
+| ![SW Show Run 3](images/sw_sh_run_3.jpeg) | ![SW Show Run 4](images/sw_sh_run_4.jpeg) | ![SW Show Run 5](images/sw_sh_run_5.jpeg) |
+
+</details>
+
+---
+
+<a name="section-8-connectivity-validation--security-isolation-tests"></a>
+## 🧪 Section 8: Connectivity Validation & Security Isolation Tests
+
+This section contains verification ping tests demonstrating successful Intra-VLAN communication, gateway reachability, and zero-trust ACL blocking.
+
+<details>
+<summary>▶ <b>Click to view Connectivity Verification & ACL Tests</b></summary>
+<br>
+
+### 1. Inter-VLAN Routing & Office LAN Validation
+From **Manager PC** (`192.168.10.x`), traffic successfully reaches the local printer (`192.168.10.10`) and default gateway (`192.168.10.1`) with `<1ms` round-trip latency.
+
+![Manager PC Connectivity Test](images/manager_pc_ping_test.jpeg)
+
+---
+
+### 2. POS Terminal Connectivity
+The **POS Terminal** verifies instant communication with its default gateway (`192.168.20.1`) and receipt printer (`192.168.20.10`) with 0% packet loss.
+
+![POS Terminal Ping Test](images/pos_terminal_ping_test.jpeg)
+
+---
+
+### 3. Guest ACL Isolation & Quarantine Test
+From **Laptop0** (`192.168.30.21`):
+* **Ping to POS Subnet (`192.168.20.1`):** `Destination host unreachable` (Explicitly blocked by ACL `GUEST`).
+* **Ping within Guest Subnet (`192.168.30.22`):** `4/4 packets successful` (Intra-subnet communication working).
+
+![Guest Isolation Ping Test](images/guest_laptop_ping_acl_test.jpeg)
+
+</details>
+
+---
+
+<a name="section-9-key-engineering-takeaways"></a>
+## 💡 Section 9: Key Engineering Takeaways
+
+This section synthesizes the core technical insights gained throughout this implementation.
+
+<details>
+<summary>▶ <b>Click to view Key Engineering Insights</b></summary>
+<br>
+
+1. **DHCP Bootstrapping inside ACLs:** When applying an inbound ACL on a DHCP client subnet, standard `deny` rules will drop broadcast DHCP requests unless `permit udp any eq bootpc any eq bootps` is placed at top-of-stack.
+2. **Deterministic Port Mapping:** Grouping switch ports sequentially (`1-5` Office, `6-10` POS, `11` AP) reduces administrative overhead and makes on-site physical troubleshooting straightforward.
+3. **Defense-in-Depth for Management:** Disabling telnet across VTY lines via `transport input ssh` and routing management through an isolated SVI (`VLAN 99`) protects infrastructure from rogue LAN discovery.
+
+</details>
+---
