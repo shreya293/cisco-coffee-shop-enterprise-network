@@ -40,25 +40,3 @@ In a commercial establishment like a modern café or retail branch, business ope
 
 
 
-
-<details>
-<summary>📌 <b>Table of Contents (Click to Expand / Collapse)</b></summary>
-
-1. [Executive Summary & Design Objectives](#-executive-summary--design-objectives)
-2. [Network Architecture & Topology](#-network-architecture--topology)
-3. [Addressing Scheme & VLAN Segmentation](#-addressing-scheme--vlan-segmentation)
-4. [Step-by-Step Configuration Commands](#-step-by-step-configuration-commands)
-   - [Switch Hardening & L2 VLAN Configuration](#1-switch-configuration-coffee-sw)
-   - [Router-on-a-Stick, DHCP & ACL Security](#2-router-configuration-coffee-shop-rtr)
-5. [End-Device & Wireless Setup](#-end-device--wireless-setup)
-6. [Configuration Verification (Running-Configs)](#-configuration-verification-running-configs)
-7. [Testing & Connectivity Validation](#-testing--connectivity-validation)
-8. [Key Engineering Takeaways](#-key-engineering-takeaways)
-
-</details>
-
----
-
-## 🗺 Network Architecture & Topology
-
-The topology is structured around a central 24-port switch connected via an 802.1Q trunk uplink to an edge router terminating an ISP uplink.
